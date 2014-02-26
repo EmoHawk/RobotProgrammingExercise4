@@ -3,7 +3,7 @@ import rp13.search.util.EqualityGoalTest;
 
 public class UninformedSearch<ActionStatePair> {
 	
-	/*private Queue<ActionStatePair> agenda;
+	private Queue<ActionStatePair> agenda;
 	private EqualityGoalTest goalTest;
 	private ActionStatePair node;
 	//private Stack<ActionStatePair> agenda;
@@ -37,7 +37,6 @@ public class UninformedSearch<ActionStatePair> {
 		}	
 	}
 	*/
-}
 /*
 
 */
