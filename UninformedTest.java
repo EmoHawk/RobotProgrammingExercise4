@@ -37,7 +37,7 @@ public class UninformedTest {
 				sf.getSuccessors(state, successors);
 				for(ActionStatePair<PuzzleMove, EightPuzzle> node : successors)
 				{
-					//System.out.println(state);
+					System.out.println(state);
 					agenda.push(node);
 				}
 			}
