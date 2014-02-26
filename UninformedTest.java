@@ -12,37 +12,52 @@ public class UninformedTest {
 	private static EightPuzzle state;
 	private static EightPuzzleSuccessorFunction sf;
 	private static List<ActionStatePair<PuzzleMove,EightPuzzle>> successors;
-	private static Queue<ActionStatePair<PuzzleMove,EightPuzzle>> agenda;
+	private static Stack<ActionStatePair<PuzzleMove, EightPuzzle>> agenda;
 	private static EqualityGoalTest<EightPuzzle> goalTest;
 	private static ActionStatePair<PuzzleMove,EightPuzzle> node;
+	private static boolean donePrev;
 	
 	public static void run()
 	{
-		UninformedSearch();
+		ActionStatePair<PuzzleMove, EightPuzzle> goal = UninformedSearch();
+		System.out.println(goal.toString());
 	}
 	
 	private static ActionStatePair<PuzzleMove,EightPuzzle> UninformedSearch() {
 		// TODO Auto-generated method stub
-		while(!agenda.isEmpty())
-		{
+	
+		while(!agenda.isEmpty()) {
 			node = agenda.pop();
-			if(goalTest.isGoal(node.getState()))
-			{
+			if(goalTest.isGoal(node.getState())) {
+				System.out.println("GOAL");
 				return node;
 			}
-			else
-			{
+			else {
 				//generate successors
 				// ...
-				sf.getSuccessors(state, successors);
-				for(ActionStatePair<PuzzleMove, EightPuzzle> node : successors)
-				{
-					System.out.println(state);
-					agenda.push(node);
+				sf.getSuccessors(node.getState(), successors);
+				for (ActionStatePair<PuzzleMove, EightPuzzle> item : successors) {
+					int index = successors.indexOf(item);
+					donePrev = false;
+					for(int i = 0; i < index; i++)
+					{
+						String comparison1 = item.getState().toString();
+						String comparison2 = successors.get(i).getState().toString();
+						if(comparison1.equals(comparison2))
+						{
+							donePrev = true;
+							//System.out.println("True");
+						}
+					}
+					if(!donePrev)
+					{
+						System.out.println(item.toString());
+						agenda.push(item);
+					}
 				}
 			}
 		}
-		return node;	
+		return node;
 	}		
 
 	/**		
@@ -54,7 +69,7 @@ public class UninformedTest {
 		state = EightPuzzle.randomEightPuzzle();
 		sf = new EightPuzzleSuccessorFunction();
 		successors = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
-		agenda = new Queue<ActionStatePair<PuzzleMove, EightPuzzle>>();
+		agenda = new Stack<ActionStatePair<PuzzleMove, EightPuzzle>>();
 		goalTest = new EqualityGoalTest<EightPuzzle>(EightPuzzle.orderedEightPuzzle());
 		agenda.push(new ActionStatePair<PuzzleMove, EightPuzzle>(null, state));
 		//node = new ActionStatePair<PuzzleMove, EightPuzzle>(_action, _state);
