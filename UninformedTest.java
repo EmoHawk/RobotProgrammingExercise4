@@ -13,15 +13,92 @@ public class UninformedTest {
 	private static EightPuzzleSuccessorFunction sf;
 	private static List<ActionStatePair<PuzzleMove,EightPuzzle>> successors;
 	private static List<ActionStatePair<PuzzleMove,EightPuzzle>> doneBefore;
-	private static Queue<ActionStatePair<PuzzleMove, EightPuzzle>> agenda;
+	private static Stack<ActionStatePair<PuzzleMove, EightPuzzle>> agenda;
+	
 	private static EqualityGoalTest<EightPuzzle> goalTest;
 	private static ActionStatePair<PuzzleMove,EightPuzzle> node;
 	protected static boolean donePrev = false;
 	
 	public static void run()
 	{
-		ActionStatePair<PuzzleMove, EightPuzzle> goal = UninformedSearch();
+		//ActionStatePair<PuzzleMove, EightPuzzle> goal = UninformedSearch();
+		ActionStatePair<PuzzleMove, EightPuzzle> goal = InformedSearch();
 		System.out.println(goal.toString());
+	}
+	
+	private static ActionStatePair<PuzzleMove,EightPuzzle> InformedSearch() {
+		// TODO Auto-generated method stub
+		
+		while(!agenda.isEmpty()) {
+			node = agenda.pop();
+			System.out.println(node.getState().toString());
+			doneBefore.add(node);
+			if(goalTest.isGoal(node.getState())) {
+				System.out.println("GOAL");
+				return node;
+			}
+			else {
+				//generate successors
+				// ...
+				sf.getSuccessors(node.getState(), successors);
+				for (ActionStatePair<PuzzleMove, EightPuzzle> successor : successors) {
+					boolean foundBefore = false;
+					for (ActionStatePair<PuzzleMove, EightPuzzle> item : doneBefore) {
+						String check = item.getState().toString();
+						String check2 = successor.getState().toString();
+						if(check.equals(check2))
+						{
+							foundBefore = true;
+						}
+						
+					}
+					if(!foundBefore)
+					{
+						agenda.push(successor);
+						
+					}
+				}
+				successors.clear();
+				sortAgenda();
+			}
+		}
+		return node;
+	}	
+	
+	private static void sortAgenda()
+	{
+		ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> tempArray = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
+		
+		while(!agenda.isEmpty())
+		{
+			tempArray.add(agenda.pop());
+		}
+		//System.out.println("Array: " + tempArray.toString());
+		
+		int n = tempArray.size();
+		int newn = 0;
+		do
+		{
+			newn = 0;
+			for(int i = 1; i < n - 1; i++)
+			{
+				int compare1 = tempArray.get(i - 1).getState().getNoTurns() + tempArray.get(i - 1).getState().getHammingDistance();
+				int compare2 = tempArray.get(i).getState().getNoTurns() + tempArray.get(i).getState().getHammingDistance();
+				if(compare1 > compare2)
+				{
+					ActionStatePair<PuzzleMove, EightPuzzle> tempItem = new ActionStatePair<PuzzleMove, EightPuzzle>(tempArray.get(i).getAction(), tempArray.get(i).getState());
+					tempArray.set(i, tempArray.get(i - 1));
+					tempArray.set(i - 1, tempItem);
+					newn = i;
+				}
+			}
+			n = newn;
+		} while (n != 0);
+		
+		for (ActionStatePair<PuzzleMove, EightPuzzle> actionStatePair : tempArray) {
+			agenda.push(actionStatePair);
+		}
+		
 	}
 	
 	private static ActionStatePair<PuzzleMove,EightPuzzle> UninformedSearch() {
@@ -67,11 +144,11 @@ public class UninformedTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		state = EightPuzzle.randomEightPuzzle(8);
+		state = EightPuzzle.randomEightPuzzle();
 		sf = new EightPuzzleSuccessorFunction();
 		successors = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
 		doneBefore = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
-		agenda = new Queue<ActionStatePair<PuzzleMove, EightPuzzle>>();
+		agenda = new Stack<ActionStatePair<PuzzleMove, EightPuzzle>>();
 		goalTest = new EqualityGoalTest<EightPuzzle>(EightPuzzle.orderedEightPuzzle());
 		agenda.push(new ActionStatePair<PuzzleMove, EightPuzzle>(null, state));
 
