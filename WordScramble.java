@@ -1,3 +1,5 @@
+import java.util.Random;
+
 
 public class WordScramble {
 
@@ -35,5 +37,32 @@ public class WordScramble {
 	{
 		return word;
 	}
+	
+	public int getHamming(String compareWord)
+	{
+		int returnValue= 0;
+		for(int i = 0; i < word.length(); i++)
+		{
+			if(word.charAt(i) != compareWord.charAt(i))
+			{
+				returnValue++;
+			}
+		}
+		return returnValue;
+	}
+	
+	
+	
+	public void scramble(int moves)
+	{
+		String temp = word.toString();
+		Random gen = new Random();
+		
+		for(int i = 0; i <= moves; i++)
+		{
+			this.swap( gen.nextInt(word.length()), gen.nextInt(word.length()) );
+		}
+	}
+	
 	
 }
