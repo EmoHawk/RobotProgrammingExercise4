@@ -4,10 +4,12 @@ import java.util.Random;
 public class WordScramble {
 
 	private String word;
+	private String goalWord;
 	
 	public WordScramble(String word)
 	{
 		this.word = word;
+		goalWord = word;
 	}
 	
 	public String getWord()
@@ -51,15 +53,46 @@ public class WordScramble {
 		return returnValue;
 	}
 	
-	
-	public void scramble(int moves)
+	public int getNoTurns()
 	{
+		
+		int turns = 0;
+		
+		for(int i = 0; i < word.length(); i++)
+		{
+			for(int j = 0; j < word.length(); j++)
+			{
+				if(word.charAt(i) == goalWord.charAt(j))
+				{
+					if(i > j)
+					{
+						turns += i - j;
+					}
+					else
+					{
+						turns += j - i;
+					}
+				}
+					
+			}
+			
+		}
+		
+		return turns;
+		
+	}
+	
+	
+	public static WordScramble scramble(String word, int moves)
+	{
+		WordScramble scramble = new WordScramble(word);
 		Random gen = new Random();
 		
 		for(int i = 0; i <= moves; i++)
 		{
-			this.swap( gen.nextInt(word.length()), gen.nextInt(word.length()) );
+			scramble.swap( gen.nextInt(word.length()), gen.nextInt(word.length()) );
 		}
+		return scramble;
 	}
 	
 	
