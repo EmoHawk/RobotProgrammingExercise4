@@ -38,7 +38,7 @@ public class WordScramble {
 		return word;
 	}
 	
-	public int getHamming(String compareWord)
+	public int getHammingDistance(String compareWord)
 	{
 		int returnValue= 0;
 		for(int i = 0; i < word.length(); i++)
@@ -52,10 +52,8 @@ public class WordScramble {
 	}
 	
 	
-	
 	public void scramble(int moves)
 	{
-		String temp = word.toString();
 		Random gen = new Random();
 		
 		for(int i = 0; i <= moves; i++)
