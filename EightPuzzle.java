@@ -256,17 +256,17 @@ public class EightPuzzle{
 		return ham;
 		
 	}
-	
+	//Need to add to wordscramble
 	public int getNoTurns()
 	{
-		
+		int[] goalboard = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, BLANK };
 		int turns = 0;
 		
 		for(int i = 0; i < m_board.length; i++)
 		{
 			for(int j = 0; j < m_board.length; j++)
 			{
-				if(m_board[i] == m_board[j])
+				if(m_board[i] == goalboard[j])
 				{
 					if(i > j)
 					{
