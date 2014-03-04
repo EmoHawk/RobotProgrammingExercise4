@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import rp13.search.interfaces.SuccessorFunction;
 import rp13.search.problem.puzzle.EightPuzzle;
 import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
 import rp13.search.problem.puzzle.EightPuzzleSuccessorFunction;
@@ -9,11 +10,19 @@ import rp13.search.util.EqualityGoalTest;
 
 public class UninformedTest {
 
+	//EightPuzzle Variables
 	private static EightPuzzle state;
-	private static EightPuzzleSuccessorFunction sf;
+	private static SuccessorFunction sf;
 	private static List<ActionStatePair<PuzzleMove,EightPuzzle>> successors;
 	private static List<ActionStatePair<PuzzleMove,EightPuzzle>> doneBefore;
 	private static Stack<ActionStatePair<PuzzleMove, EightPuzzle>> agenda;
+	
+	//WordScramble Variables
+	private static WordScramble wordState;
+	private static WordScrambleSuccessor wordSF;
+	private static List<ActionStatePair<Switch,WordScramble>> wordSuccessors;
+	private static List<ActionStatePair<Switch,WordScramble>> wordDoneBefore;
+	private static Stack<ActionStatePair<Switch,WordScramble>> wordAgenda;
 	
 	private static EqualityGoalTest<EightPuzzle> goalTest;
 	private static ActionStatePair<PuzzleMove,EightPuzzle> node;
@@ -143,7 +152,7 @@ public class UninformedTest {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		//For EightPuzzle
 		state = EightPuzzle.randomEightPuzzle();
 		sf = new EightPuzzleSuccessorFunction();
 		successors = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
@@ -151,9 +160,20 @@ public class UninformedTest {
 		agenda = new Stack<ActionStatePair<PuzzleMove, EightPuzzle>>();
 		goalTest = new EqualityGoalTest<EightPuzzle>(EightPuzzle.orderedEightPuzzle());
 		agenda.push(new ActionStatePair<PuzzleMove, EightPuzzle>(null, state));
-
-			run();
-			
+		
+		/*
+		wordState = WordScramble.scramble("hello", 5);
+		wordSF = new WordScrambleSuccessor();
+		wordSuccessors = new ArrayList<ActionStatePair<Switch, WordScramble>>();
+		wordDoneBefore = new ArrayList<ActionStatePair<Switch, WordScramble>>();
+		wordAgenda = new Stack<ActionStatePair<Switch, WordScramble>>();
+		goalTest = new EqualityGoalTest<EightPuzzle>(EightPuzzle.orderedEightPuzzle());
+		agenda.push(new ActionStatePair<PuzzleMove, EightPuzzle>(null, state));
+		*/
+		run();
+		/*BFSearch<PuzzleMove, EightPuzzle> bf = new BFSearch<PuzzleMove, EightPuzzle>(state, sf);
+		ActionStatePair<PuzzleMove, EightPuzzle> goal = bf.run();
+		System.out.println(goal.toString());*/
 	}
 	
 
